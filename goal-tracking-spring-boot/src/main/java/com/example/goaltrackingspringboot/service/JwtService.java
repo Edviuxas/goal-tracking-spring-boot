@@ -19,6 +19,7 @@ public class JwtService {
 
     private String secretKey = "A2856E269F4BAC09373382788AC7F98F5670F9ADD045D2D50B5016B937B04300";
     private final long jwtExpiration = 900000;
+    private final long refreshExpiration = 1555200000; // TODO: fix this number
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -35,6 +36,10 @@ public class JwtService {
 
     public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
         return buildToken(extraClaims, userDetails, jwtExpiration);
+    }
+
+    public String generateRefreshToken(UserDetails userDetails) {
+        return buildToken(new HashMap<>(), userDetails, refreshExpiration);
     }
 
     private String buildToken(Map<String, Object> extraClaims, UserDetails userDetails, long expiration) {

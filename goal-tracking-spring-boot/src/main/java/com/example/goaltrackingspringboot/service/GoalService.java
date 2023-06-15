@@ -27,4 +27,13 @@ public class GoalService {
         return returnedGoalFromRepo.map(goal -> Response.builder().status(200).data(goal).message("request successful").build())
                 .orElseGet(() -> Response.builder().status(422).data(null).message("goal with this id not found").build());
     }
+
+    public Response deleteGoalById(Long id) {
+        goalRepository.deleteById(id);
+        return Response.builder().status(200).data(null).message("Deleted successfully").build();
+    }
+
+    public Response updateGoal(Goal goal) {
+        return Response.builder().status(200).data(goalRepository.save(goal)).message("Updated successfully").build();
+    }
 }

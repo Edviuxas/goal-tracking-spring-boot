@@ -31,4 +31,14 @@ public class GoalController {
     public Response getGoalById(@PathVariable Long id) {
         return goalService.getGoalById(id);
     }
+
+    @DeleteMapping("/goal/{id}")
+    public Response deleteGoalById(@PathVariable Long id) {
+        return goalService.deleteGoalById(id);
+    }
+
+    @PutMapping("/goal")
+    public Response updateGoal(@RequestBody Goal goal) {
+        return goalService.updateGoal(goal);
+    }
 }

@@ -1,26 +1,26 @@
 package com.example.goaltrackingspringboot.service;
 
-import com.example.goaltrackingspringboot.dto.UserDto;
+import com.example.goaltrackingspringboot.model.Goal;
+import com.example.goaltrackingspringboot.model.Response;
 import com.example.goaltrackingspringboot.model.User;
 import com.example.goaltrackingspringboot.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
+@RequiredArgsConstructor
 public class UserService {
-    @Autowired
-    PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
 
-    @Autowired
-    UserRepository userRepository;
+    public Response getAllUsers() {
+        return Response.builder().status(200).data(userRepository.findAll()).message("Retrieved successfully").build();
+    }
 
-    public User createUser(UserDto user) {
-        User userToSave = new User();
-        userToSave.setEmail(user.getEmail());
-        userToSave.setFirstName(user.getFirstName());
-        userToSave.setLastName(user.getLastName());
-        userToSave.setHashedPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepository.save(userToSave);
+    public Response getUserById(Long id) {
+        Optional<User> returnedUserFromRepo = userRepository.findById(id);
+        return returnedUserFromRepo.map(user -> Response.builder().status(200).data(user).message("request successful").build())
+                .orElseGet(() -> Response.builder().status(422).data(null).message("user with this id not found").build());
     }
 }
