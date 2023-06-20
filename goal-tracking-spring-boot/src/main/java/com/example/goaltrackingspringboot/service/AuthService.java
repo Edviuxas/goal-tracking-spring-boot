@@ -5,22 +5,14 @@ import com.example.goaltrackingspringboot.dto.AuthResponseDto;
 import com.example.goaltrackingspringboot.dto.UserDto;
 import com.example.goaltrackingspringboot.model.Response;
 import com.example.goaltrackingspringboot.model.JwtToken;
-import com.example.goaltrackingspringboot.model.Role;
 import com.example.goaltrackingspringboot.model.User;
 import com.example.goaltrackingspringboot.repository.JwtTokenRepository;
 import com.example.goaltrackingspringboot.repository.UserRepository;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.io.IOException;
-import java.util.Date;
 
 @Service
 @RequiredArgsConstructor
@@ -71,6 +63,8 @@ public class AuthService {
         revokeAllUserTokens(user);
         saveUserToken(user, jwtToken);
         AuthResponseDto authResponseDto = AuthResponseDto.builder()
+                .id(user.getId())
+                .email(user.getEmail())
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
                 .build();

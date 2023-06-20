@@ -1,21 +1,37 @@
 package com.example.goaltrackingspringboot.service;
 
+import com.example.goaltrackingspringboot.dto.GoalDto;
 import com.example.goaltrackingspringboot.model.Goal;
 import com.example.goaltrackingspringboot.model.Response;
 import com.example.goaltrackingspringboot.repository.GoalRepository;
+//import com.example.goaltrackingspringboot.repository.OkrGoalRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class GoalService {
-    @Autowired
-    GoalRepository goalRepository;
+    private final GoalRepository goalRepository;
+//    private final OkrGoalService okrGoalService;
 
     public Goal createGoal(Goal goal) {
-        return goalRepository.save(goal);
+//        System.out.println(goalDto);
+//        Goal goalToSave = Goal.builder()
+//                .name(goalDto.getName())
+//                .createdBy(goalDto.getCreatedBy())
+//                .difficulty(goalDto.getDifficulty())
+//                .finishBy(goalDto.getFinishBy())
+//                .type(goalDto.getType())
+//                .build();
+//        okrGoalRepository.saveAll(goalDto.getOkrGoals())
+        Goal savedGoal = goalRepository.save(goal);
+//        okrGoalService.saveOkrGoals(goalDto.getOkrGoals(), savedGoal);
+        return savedGoal;
     }
 
     public List<Goal> getAllGoals() {
