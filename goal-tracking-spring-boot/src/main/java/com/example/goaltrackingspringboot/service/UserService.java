@@ -23,4 +23,10 @@ public class UserService {
         return returnedUserFromRepo.map(user -> Response.builder().status(200).data(user).message("request successful").build())
                 .orElseGet(() -> Response.builder().status(422).data(null).message("user with this id not found").build());
     }
+
+    public Response getUserByEmail(String emailAddress) {
+        Optional<User> returnedUserFromRepo = userRepository.findByEmail(emailAddress);
+        return returnedUserFromRepo.map(user -> Response.builder().status(200).data(user).message("request successful").build())
+                .orElseGet(() -> Response.builder().status(422).data(null).message("user with this email not found").build());
+    }
 }
