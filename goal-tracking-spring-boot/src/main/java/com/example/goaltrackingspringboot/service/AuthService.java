@@ -65,6 +65,7 @@ public class AuthService {
         AuthResponseDto authResponseDto = AuthResponseDto.builder()
                 .id(user.getId())
                 .email(user.getEmail())
+                .team(user.getTeam())
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
                 .build();

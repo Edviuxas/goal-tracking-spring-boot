@@ -26,6 +26,7 @@ public class User implements UserDetails {
     private String hashedPassword;
     private String firstName;
     private String lastName;
+    private Long team;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
