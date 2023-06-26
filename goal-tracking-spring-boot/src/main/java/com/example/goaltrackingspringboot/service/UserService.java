@@ -1,14 +1,13 @@
 package com.example.goaltrackingspringboot.service;
 
 import com.example.goaltrackingspringboot.dto.AuthResponseDto;
-import com.example.goaltrackingspringboot.model.Goal;
+import com.example.goaltrackingspringboot.dto.UserDto;
 import com.example.goaltrackingspringboot.model.Response;
 import com.example.goaltrackingspringboot.model.User;
 import com.example.goaltrackingspringboot.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.Optional;
 
 @Service
@@ -38,5 +37,21 @@ public class UserService {
         Optional<User> returnedUserFromRepo = userRepository.findByEmail(emailAddress);
         return returnedUserFromRepo.map(user -> Response.builder().status(200).data(user).message("request successful").build())
                 .orElseGet(() -> Response.builder().status(422).data(null).message("user with this email not found").build());
+    }
+
+    public Response updateUser(Long id, UserDto userDto) {
+        Optional<User> userInDb = userRepository.findById(id);
+        if (userInDb.isPresent()) {
+            User foundUser = userInDb.get();
+            foundUser.setTeam(userDto.getTeam());
+            User savedUser = userRepository.save(foundUser);
+            AuthResponseDto authResponseDto = AuthResponseDto.builder().id(savedUser.getId()).email(savedUser.getEmail()).team(savedUser.getTeam()).accessToken(jwtService.generateToken(savedUser)).refreshToken(jwtService.generateRefreshToken(savedUser)).build();
+            return Response.builder().status(200).data(authResponseDto).message("User updated successfully").build();
+        } else {
+            return Response.builder().status(400).data(null).message("User with this id not found").build();
+        }
+//        User savedUser = userRepository.save(user);
+//        AuthResponseDto authResponseDto = AuthResponseDto.builder().id(savedUser.getId()).email(savedUser.getEmail()).team(savedUser.getTeam()).accessToken(jwtService.generateToken(savedUser)).refreshToken(jwtService.generateRefreshToken(savedUser)).build();
+//        return Response.builder().status(200).data(authResponseDto).message("User updated successfully").build();
     }
 }

@@ -13,7 +13,7 @@ public class TeamService {
     private final TeamRepository teamRepository;
 
     public Response createTeam(Team team) {
-        System.out.println(team);
+//        System.out.println(team);
         Team savedTeam = teamRepository.save(team);
         return Response.builder().status(201).data(savedTeam).message("Team created successfully").build();
     }

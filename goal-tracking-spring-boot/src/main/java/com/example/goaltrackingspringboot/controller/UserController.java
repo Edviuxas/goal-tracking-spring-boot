@@ -2,16 +2,13 @@ package com.example.goaltrackingspringboot.controller;
 
 import com.example.goaltrackingspringboot.dto.UserDto;
 import com.example.goaltrackingspringboot.model.Response;
-import com.example.goaltrackingspringboot.model.User;
-import com.example.goaltrackingspringboot.service.GoalService;
 import com.example.goaltrackingspringboot.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin(origins = {"http://localhost:3000"})
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = {"http://localhost:3000"})
 public class UserController {
     private final UserService userService;
 
@@ -28,5 +25,10 @@ public class UserController {
     @GetMapping("/user")
     public Response getUserByEmail(@RequestParam String email) {
         return userService.getUserByEmail(email);
+    }
+
+    @PutMapping("/user/{id}")
+    public Response updateUser(@PathVariable(name = "id") Long id, @RequestBody UserDto userDto) {
+        return userService.updateUser(id, userDto);
     }
 }

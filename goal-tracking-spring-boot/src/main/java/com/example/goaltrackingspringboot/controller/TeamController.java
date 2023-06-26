@@ -18,7 +18,7 @@ public class TeamController {
 
     @PostMapping("/teams")
     public Response createTeam(@RequestBody Team team) {
-        System.out.println("lalalala");
+//        System.out.println("lalalala");
         return teamService.createTeam(team);
     }
 }
